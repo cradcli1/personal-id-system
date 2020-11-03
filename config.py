@@ -1,0 +1,2 @@
+currentDevices = []
+previousDevices = {}
