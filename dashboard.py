@@ -6,7 +6,7 @@ import requests, json
 
 # dashboard call for connected WiFi clients
 def dashboardWifi():
-    url = "https://api.meraki.com/api/v1/networks/L_634444597505819269/clients/"
+    url = os.environ['MERAKI_URL_WIFI']
 
     payload = {}
     headers = {
@@ -19,7 +19,7 @@ def dashboardWifi():
 
 # dashboard call for connected BT clients
 def dashboardBT():
-    url = "https://api.meraki.com/api/v1/networks/L_634444597505819269/bluetoothClients?perPage=20"
+    url = os.environ['MERAKI_URL_BT']
 
     payload = {}
     headers = {
