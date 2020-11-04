@@ -1,7 +1,10 @@
 # Meraki Location Scanning (For Bluetooth Clients)
 
 ## Global Variables
-Enter the following into the terminal
+Enter the following into the terminal to remove hardwired keys/links: 
+**Restart VSCode after entering all lines
+
+echo 'export SCANNING_VALIDATOR=99dfc74e4abb542eeb07195a89161d5303da09ab' >> ~/.bashrc
 
 echo 'export MERAKI_DASHBOARD_API_KEY=9b14ebe4396e70c0aa903f0915edabf4794ca47b' >> ~/.bashrc
 

@@ -1,7 +1,6 @@
 from flask import Flask, json, request
 from datetime import datetime, timedelta
-import time
-import requests, os
+import time, requests, os
 import dateutil.relativedelta
 
 # global variables
@@ -22,7 +21,7 @@ app = Flask(__name__)
 # validate web server from meraki
 @app.route('/', methods=['GET'])
 def getValidator():
-    return "99dfc74e4abb542eeb07195a89161d5303da09ab"
+    return os.environ['SCANNING_VALIDATOR']
 
 #def get_curr_devices(client_name)
 
