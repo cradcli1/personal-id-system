@@ -1,18 +1,18 @@
-# Meraki Location Scanning (For Bluetooth Clients)
+# Personal ID System Using Dashboard and Location Scanning APIs (For Bluetooth Clients)
 
 ## Global Variables
-Enter the following into the terminal to remove hardwired keys/links: 
+Enter the following into the terminal to avoid hardwired keys/links: 
 **Restart VSCode after entering all lines
 
-echo 'export SCANNING_VALIDATOR=99dfc74e4abb542eeb07195a89161d5303da09ab' >> ~/.bashrc
+echo 'export SCANNING_VALIDATOR=<VALIDATOR>' >> ~/.bashrc
 
-echo 'export MERAKI_DASHBOARD_API_KEY=9b14ebe4396e70c0aa903f0915edabf4794ca47b' >> ~/.bashrc
+echo 'export MERAKI_DASHBOARD_API_KEY=<KEY>' >> ~/.bashrc
 
-echo 'export MERAKI_URL_BT=https://api.meraki.com/api/v1/networks/L_634444597505819269/bluetoothClients?perPage=20' >> ~/.bashrc
+echo 'export MERAKI_URL_BT=https://api.meraki.com/api/v1/networks/<NETWORK ID>/bluetoothClients?perPage=20' >> ~/.bashrc
 
-echo 'export MERAKI_URL_WIFI=https://api.meraki.com/api/v1/networks/L_634444597505819269/clients/' >> ~/.bashrc
+echo 'export MERAKI_URL_WIFI=https://api.meraki.com/api/v1/networks/<NETWORK ID>/clients/' >> ~/.bashrc
 
-echo 'export TEAMS_WEBHOOK_URL=https://webexapis.com/v1/webhooks/incoming/Y2lzY29zcGFyazovL3VzL1dFQkhPT0svNzgxMWIyNTQtNTZjYS00NTdkLWI0M2MtM2JjOGY0N2U1OTky' >> ~/.bashrc
+echo 'export TEAMS_WEBHOOK_URL=<WEBHOOK URL>' >> ~/.bashrc
 
 
 ## Setup
