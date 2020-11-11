@@ -4,15 +4,15 @@
 Enter the following into the terminal to avoid hardwired keys/links: 
 **Restart VSCode after entering all lines
 
-echo 'export SCANNING_VALIDATOR=&lt;VALIDATOR&gt;' >> ~/.bashrc
+echo 'export SCANNING_VALIDATOR=**&lt;VALIDATOR&gt;**' >> ~/.bashrc
 
-echo 'export MERAKI_DASHBOARD_API_KEY=&lt;KEY&gt;' >> ~/.bashrc
+echo 'export MERAKI_DASHBOARD_API_KEY=**&lt;KEY&gt;**' >> ~/.bashrc
 
-echo 'export MERAKI_URL_BT=https://api.meraki.com/api/v1/networks/&lt;NETWORK ID&gt;/bluetoothClients?perPage=20' >> ~/.bashrc
+echo 'export MERAKI_URL_BT=https://api.meraki.com/api/v1/networks/**&lt;NETWORK ID&gt;**/bluetoothClients?perPage=20' >> ~/.bashrc
 
-echo 'export MERAKI_URL_WIFI=https://api.meraki.com/api/v1/networks/&lt;NETWORK ID&gt;/clients/' >> ~/.bashrc
+echo 'export MERAKI_URL_WIFI=https://api.meraki.com/api/v1/networks/**&lt;NETWORK ID&gt**;/clients/' >> ~/.bashrc
 
-echo 'export TEAMS_WEBHOOK_URL=&lt;WEBHOOK URL&gt;' >> ~/.bashrc
+echo 'export TEAMS_WEBHOOK_URL=**&lt;WEBHOOK URL&gt;**' >> ~/.bashrc
 
 
 ## Setup
