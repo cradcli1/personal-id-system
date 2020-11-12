@@ -2,28 +2,30 @@ from datetime import datetime, timedelta
 import time
 import dateutil.relativedelta
 
-def getLastSeen(clientName, currentTime, btResponse):
-    for client in btResponse:
-        name = client['name']
-        if name == clientName:
-            lastEpoch = client['lastSeen']
-            lastSeenTime = datetime.fromtimestamp(lastEpoch) # YYYY-MM-DD HH:MM:SS
-            diffEpoch = dateutil.relativedelta.relativedelta (currentTime, lastSeenTime)
+# variables ending with 'Time' are in YYYY-MM-DD HH:MM:SS
+# variables ending with 'Epoch' are in Unix time
+def getTimeDiff(employeeEpoch, currentTime):
+    employeeTime = datetime.fromtimestamp(employeeEpoch) 
+    diffEpoch = dateutil.relativedelta.relativedelta (currentTime, employeeTime)
 
-            # same day only
-            if diffEpoch.day is None:
-                message = "{} was last seen".format(name)
-                if diffEpoch.hours > 0:
-                    message += " {} hour".format(diffEpoch.hours)
-                    if diffEpoch.hours > 1:
-                        message += "s"
-                if diffEpoch.minutes > 0:
-                    message += " {} minute".format(diffEpoch.minutes)
-                    if diffEpoch.minutes > 1:
-                        message += "s"
-                if diffEpoch.seconds > 0:
-                    message += " {} seconds ago.".format(diffEpoch.seconds)
-    return message
+    timeInfo = ""
+
+    # same day only
+    if diffEpoch.day is None:
+        if diffEpoch.hours > 0:
+            timeInfo += "{} hour".format(diffEpoch.hours)
+            if diffEpoch.hours > 1:
+                timeInfo += "s"
+        if diffEpoch.minutes > 0:
+            timeInfo += " {} minute".format(diffEpoch.minutes)
+            if diffEpoch.minutes > 1:
+                timeInfo += "s"
+        if diffEpoch.seconds > 0:
+            timeInfo += " {} second".format(diffEpoch.seconds)
+            if diffEpoch.seconds > 1:
+                timeInfo += "s"
+
+    return timeInfo
 
 # returns time only; only used in preliminary wifi testing
 def timeConvWifi(lastSeen):

@@ -1,5 +1,4 @@
-import os #.path
-#import sys
+import os
 import requests, json
 
 #sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
