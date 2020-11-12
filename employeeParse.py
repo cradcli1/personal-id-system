@@ -1,10 +1,9 @@
-from config import keyList, deviceHistory
+from globals import keyList, deviceHistory, deviceCount, NUMBER_EMPLOYEES
 
-# deviceCount = 0
-
-# compare seen MACs with connected clients
-def setSeenEmployees(cmxMAC, dashboardResponse):
-    #global deviceCount
+# compare seen Scanning MACs with connected Dashboard MACs
+# assign nearby employee info
+def setNearbyEmployees(cmxMAC, dashboardResponse):
+    global deviceCount
 
     for client in dashboardResponse:
         # client seen in both API calls
@@ -27,7 +26,7 @@ def setSeenEmployees(cmxMAC, dashboardResponse):
 
                         employee['updatedSeen'] = client['lastSeen']
                         employee['isAway'] = False
-                        #deviceCount += 1
+                        deviceCount += 1
 
                         #print('{}'.format(client['name']))
                         break
@@ -39,7 +38,7 @@ def setSeenEmployees(cmxMAC, dashboardResponse):
                         employee['isContinuous'] = False
                         employee['isAway'] = False
                         employee['hasChanged'] = True
-                        #deviceCount += 1
+                        deviceCount += 1
                         break
                     else:
                         continue
@@ -60,8 +59,10 @@ def setSeenEmployees(cmxMAC, dashboardResponse):
             else:
                 continue
 
-# assign previously seen time to devices no longer in range    
+# assign away employee info    
 def setAwayEmployees():
+    global deviceCount
+
     for employee1 in deviceHistory['deviceList']:
         if employee1['isAway'] is False:
             for employee2 in deviceHistory['deviceList']:
@@ -72,7 +73,7 @@ def setAwayEmployees():
                         employee1['isContinuous'] = False
                         employee1['isAway'] = True
                         employee1['hasChanged'] = True
-                        #deviceCount -= 1
+                        deviceCount -= 1
                         break
                     elif employee2['updatedSeen'] < employee1['updatedSeen']:
                         employee2['lastSeen'] = employee2['updatedSeen']
@@ -80,16 +81,28 @@ def setAwayEmployees():
                         employee2['isContinuous'] = False
                         employee2['isAway'] = True
                         employee2['hasChanged'] = True
-                        #deviceCount -= 1
+                        deviceCount -= 1
                         continue
                     else:
                         continue
 
-# isolate device mac, location, rssi
+# set both nearby and away employees
+# create employee count message
 def setEmployeeInfo(cmxData, dashboardResponse):
+    global deviceCount
+    deviceCount = 0
+    employeeCountMsg = ""
+
     for seenDevice in cmxData['data']['observations']:
-        setSeenEmployees(seenDevice['clientMac'], dashboardResponse)
+        setNearbyEmployees(seenDevice['clientMac'], dashboardResponse)
         #print('Client MAC = {}'.format(seenDevice['clientMac']))
         #print('Client RSSI = {}\n'.format(seenDevice['rssi']))
+    
     setAwayEmployees()
 
+    if deviceCount >= NUMBER_EMPLOYEES:
+        employeeCountMsg += "COVID WARNING!\n"
+        
+    employeeCountMsg += "{} employees are currently in the area\n".format(str(deviceCount))
+
+    return employeeCountMsg
