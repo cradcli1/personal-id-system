@@ -4,7 +4,7 @@ Tailored for Bluetooth but compatible with WiFi devices
 ## Global Variables
 Enter the following into the terminal to avoid hardwired keys/links: 
 
-**Restart VSCode after entering all lines
+**Restart after entering all lines
 
 echo 'export SCANNING_VALIDATOR=**&lt;VALIDATOR&gt;**' >> ~/.bashrc
 
