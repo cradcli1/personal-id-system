@@ -20,8 +20,7 @@ echo 'export MERAKI_URL_AP=https://api.meraki.com/api/v1/networks/ **&lt;NETWORK
 echo 'export TEAMS_WEBHOOK_URL=**&lt;WEBHOOK URL&gt;**' >> ~/.bashrc
 
 
-## Setup 
-###### Courtesy of Alex Hoecht
+## Setup ###### Courtesy of Alex Hoecht
 1) Meraki Dashboard
     1) Log into Meraki Dashboard
     2) Navigate to Location Scanning settings (<b>Network-wide -> Configure -> General</b>)
