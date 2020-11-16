@@ -1,25 +1,26 @@
-# Personal ID System Using Dashboard and Location Scanning APIs (For Bluetooth Clients)
+# Personal ID System Using Dashboard and Location Scanning APIs
+Tailored for Bluetooth but compatible with WiFi devices
 
 ## Global Variables
-Enter the following into the terminal to avoid hardwired keys/links: 
+After replacing appropriate **&lt;variables&gt;**, enter the following into the terminal: 
 
-**Restart VSCode after entering all lines
+    echo 'export SCANNING_VALIDATOR=<VALIDATOR&gt>' >> ~/.bashrc
 
-echo 'export SCANNING_VALIDATOR=**&lt;VALIDATOR&gt;**' >> ~/.bashrc
+    echo 'export MERAKI_DASHBOARD_API_KEY=<KEY>' >> ~/.bashrc
 
-echo 'export MERAKI_DASHBOARD_API_KEY=**&lt;KEY&gt;**' >> ~/.bashrc
+    echo 'export MERAKI_URL_BT=https://api.meraki.com/api/v1/networks/<NETWORK ID>/bluetoothClients?perPage=20' >> ~/.bashrc
 
-echo 'export MERAKI_URL_BT=https://api.meraki.com/api/v1/networks/ **&lt;NETWORK ID&gt;**/bluetoothClients?perPage=20' >> ~/.bashrc
+    echo 'export MERAKI_URL_WIFI=https://api.meraki.com/api/v1/networks/<NETWORK ID>/clients/' >> ~/.bashrc
 
-echo 'export MERAKI_URL_WIFI=https://api.meraki.com/api/v1/networks/ **&lt;NETWORK ID&gt;**/clients/' >> ~/.bashrc
+    echo 'export MERAKI_URL_AP=https://api.meraki.com/api/v1/networks/<NETWORK ID>/devices' >> ~/.bashrc
 
-echo 'export MERAKI_URL_AP=https://api.meraki.com/api/v1/networks/ **&lt;NETWORK ID&gt;**/devices' >> ~/.bashrc
+    echo 'export TEAMS_WEBHOOK_URL=<WEBHOOK URL>' >> ~/.bashrc
+
+**Restart code editor after entering all lines
 
 
-echo 'export TEAMS_WEBHOOK_URL=**&lt;WEBHOOK URL&gt;**' >> ~/.bashrc
-
-
-## Setup
+## Setup 
+###### Courtesy of Alex Hoecht
 1) Meraki Dashboard
     1) Log into Meraki Dashboard
     2) Navigate to Location Scanning settings (<b>Network-wide -> Configure -> General</b>)
@@ -39,10 +40,6 @@ echo 'export TEAMS_WEBHOOK_URL=**&lt;WEBHOOK URL&gt;**' >> ~/.bashrc
         1) COPY the newly created public url
         2) PASTE the public url into the Meraki Dashboard -> Location Scanning Settings -> POST url
             1) Ensure you also select "Bluetooth" as the Radio Type
-    2) From the Meraki Dashboard -> Location Scanning Settings
-        1) COPY the validation string
-        2) PASTE the validation string into the Project -> app.py -> get_validator()
-            1) Paste over the 'HERE'
     
 ## Run Application
 1) From Virtual Environment (created in Setup)
