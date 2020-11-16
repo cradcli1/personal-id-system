@@ -46,20 +46,22 @@ def getCmxJSON():
         currentTime = datetime.fromtimestamp(currentEpoch)
 
         for employee in deviceHistory['deviceList']:
-            if employee['name'] is not None:
+            employeeName = employee['name']
+            
+            if employeeName is not None:
                 # employee currently in range
                 if employee['firstSeen'] is not None:
                     # new or returning
                     if employee['isContinuous'] is False:
-                        nearbyEmployee = "{} just entered the {}".format(employee['name'], networkName)
+                        nearbyEmployee = "{} just entered the {}".format(employeeName, networkName)
                     # continuously in area
                     elif employee['isContinuous'] is True:
                         if employee['isMainUser'] is True:
-                            selfMessage = "{} are in the {}".format(employee['name'], networkName)
+                            selfMessage = "{} are in the {}".format(employeeName, networkName)
                             print("{}".format(selfMessage))
                             continue
                         else:
-                            nearbyEmployee = "{} has been in the {} for".format(employee['name'], networkName)
+                            nearbyEmployee = "{} has been in the {} for".format(employeeName, networkName)
 
                     timeDiff = getTimeDiff(employee['firstSeen'], currentTime)
                     employeeMessage = nearbyEmployee + timeDiff + "."
@@ -67,7 +69,7 @@ def getCmxJSON():
                     print("{}".format(employeeMessage))
                 # employee out of range (employee['firstSeen'] is None)
                 elif employee['isMainUser'] is False:
-                    awayEmployee = "{} is no longer in the {} but was last nearby".format(employee['name'], networkName)
+                    awayEmployee = "{} is no longer in the {} but was last nearby".format(employeeName, networkName)
                     timeDiff = getTimeDiff(employee['lastSeen'], currentTime)
                     employeeMessage = awayEmployee + timeDiff + " ago."
                     # sendMessage(employeeMessage)
