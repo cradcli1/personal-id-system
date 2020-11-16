@@ -37,16 +37,35 @@ def getCmxJSON():
         #print("\nNearby Bluetooth Tags:\n")
         btResponse = dashboardBT()
         setEmployeeInfo(cmxData, btResponse)
-        employeeCountMsg = getEmployeeCount()
-        print()
-        print(employeeCountMsg)
-        print()
-        #sendMessage(employeeCountMsg)
-
         currentEpoch = time.time()
         currentTime = datetime.fromtimestamp(currentEpoch)
 
-        for employee in deviceHistory['deviceList']:
+        # reorganize mainUser to front of list
+        deviceHistory['deviceList'] = sorted(deviceHistory['deviceList'], key = lambda i: 
+            (i['isMainUser'], i['justArrived'], i['justLeft']), reverse = True)
+
+        userHistory = deviceHistory['deviceList'][1]
+
+        if userHistory['isAway'] is False:
+            selfMessage = ""
+
+            # new or returning
+            if userHistory['isContinuous'] is False:
+                selfMessage = "You just entered the {}.".format(APName)
+            # continuously in area
+            elif userHistory['isContinuous'] is True:
+                selfMessage = "You are currently in the {}.".format(APName)
+            
+            print()
+            print("{}".format(selfMessage))
+                
+        employeeCountMsg = getEmployeeCount()
+        print()
+        print("{}".format(employeeCountMsg))
+        print()
+        #sendMessage(employeeCountMsg)
+
+        for employee in deviceHistory['deviceList'][1:]:
             employeeName = employee['name']
             
             if employeeName is not None:
@@ -55,28 +74,29 @@ def getCmxJSON():
                     # new or returning
                     if employee['isContinuous'] is False:
                         nearbyEmployee = "{} just entered the {}".format(employeeName, APName)
+                        timeDiff = getTimeDiff(employee['firstSeen'], currentTime) + " ago"
                     # continuously in area
                     elif employee['isContinuous'] is True:
-                        if employee['isMainUser'] is True:
-                            selfMessage = "{} are in the {}".format(employeeName, APName)
-                            print("{}".format(selfMessage))
-                            continue
-                        else:
-                            nearbyEmployee = "{} has been in the {} for".format(employeeName, APName)
-
-                    timeDiff = getTimeDiff(employee['firstSeen'], currentTime)
+                        #if employee['isMainUser'] is True:
+                        #    selfMessage = "{} are in the {}".format(employeeName, APName)
+                        #    print("{}".format(selfMessage))
+                        #    continue
+                        #else:
+                        nearbyEmployee = "{} has been in the area for".format(employeeName)
+                        timeDiff = getTimeDiff(employee['firstSeen'], currentTime)
+                    
                     employeeMessage = nearbyEmployee + timeDiff + "."
                     #sendMessage(employeeMessage)
                     print("{}".format(employeeMessage))
                 # employee out of range (employee['firstSeen'] is None)
-                elif employee['isAway'] is True and employee['isMainUser'] is False:
+                elif employee['isAway'] is True: #and employee['isMainUser'] is False:
                     # just left
                     if employee['justLeft'] is True:
                         employee['justLeft'] = False
                         awayEmployee = "{} just left the {}".format(employeeName, APName)
                     # previously gone
                     else:
-                        awayEmployee = "{} is no longer in the {} but was last nearby".format(employeeName, APName)
+                        awayEmployee = "{} is no longer in the area but was last nearby".format(employeeName)
                     
                     timeDiff = getTimeDiff(employee['lastSeen'], currentTime)
                     employeeMessage = awayEmployee + timeDiff + " ago."

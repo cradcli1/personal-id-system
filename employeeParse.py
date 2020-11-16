@@ -22,10 +22,12 @@ def setNearbyEmployees(cmxMAC, dashboardResponse):
                             employee['firstSeen'] = client['lastSeen']
                             employee['lastSeen'] = None
                             employee['isAway'] = False
+                            employee['justArrived'] = True
                             employee['hasChanged'] = True
                         # continuous sighting
                         else:
                             employee['isContinuous'] = True
+                            employee['justArrived'] = False
                             employee['hasChanged'] = False
 
                         employee['updatedSeen'] = client['lastSeen']
@@ -44,6 +46,7 @@ def setNearbyEmployees(cmxMAC, dashboardResponse):
                         employee['updatedSeen'] = client['lastSeen']
                         employee['isContinuous'] = False
                         employee['isAway'] = False
+                        employee['justArrived'] = True
                         employee['hasChanged'] = True
                         break
                     else:
