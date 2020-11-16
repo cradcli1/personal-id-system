@@ -37,7 +37,7 @@ def getCmxJSON():
         #print("\nNearby Bluetooth Tags:\n")
         btResponse = dashboardBT()
         setEmployeeInfo(cmxData, btResponse)
-        employeeCountMsg = employeeCount()
+        employeeCountMsg = getEmployeeCount()
         print()
         print(employeeCountMsg)
         print()

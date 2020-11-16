@@ -11,6 +11,8 @@ def setNearbyEmployees(cmxMAC, dashboardResponse):
         if client['mac'] == cmxMAC:
             # bluetooth
             if len(client['id']) == 18 and client['name'] is not None: 
+                deviceCount += 1
+
                 # first check if employee is in deviceHistory to prevent duplicate entries
                 for employee in deviceHistory['deviceList']:
                     # previously seen
@@ -27,8 +29,6 @@ def setNearbyEmployees(cmxMAC, dashboardResponse):
                             employee['hasChanged'] = False
 
                         employee['updatedSeen'] = client['lastSeen']
-                        #deviceCount += 1
-
                         #print('{}'.format(client['name']))
                         break
                     # employee's intitial sighting
@@ -39,7 +39,6 @@ def setNearbyEmployees(cmxMAC, dashboardResponse):
                         else:
                             employee['isMainUser'] = False
                             employee['name'] = client['name'] 
-                            #deviceCount += 1
                                                     
                         employee['firstSeen'] = client['lastSeen']
                         employee['updatedSeen'] = client['lastSeen']
@@ -68,8 +67,6 @@ def setNearbyEmployees(cmxMAC, dashboardResponse):
 
 # assign away employee info    
 def setAwayEmployees():
-    global deviceCount
-
     # compare last in range employees
     # employees with lower updatedSeen times are 
     for employee1 in deviceHistory['deviceList']:
@@ -83,7 +80,6 @@ def setAwayEmployees():
                         employee1['isAway'] = True
                         employee1['justLeft'] = True
                         employee1['hasChanged'] = True
-                        #deviceCount -= 1
                         break
                     elif employee2['updatedSeen'] < employee1['updatedSeen']:
                         employee2['firstSeen'] = None
@@ -92,7 +88,6 @@ def setAwayEmployees():
                         employee2['isAway'] = True
                         employee2['justLeft'] = True
                         employee2['hasChanged'] = True
-                        #deviceCount -= 1
                         break
                     else:
                         continue
@@ -100,8 +95,8 @@ def setAwayEmployees():
 # set both nearby and away employees
 # create employee count message
 def setEmployeeInfo(cmxData, dashboardResponse):
-    #global deviceCount
-    #deviceCount = 0
+    global deviceCount
+    deviceCount = 0
 
     for seenDevice in cmxData['data']['observations']:
         setNearbyEmployees(seenDevice['clientMac'], dashboardResponse)
@@ -110,14 +105,9 @@ def setEmployeeInfo(cmxData, dashboardResponse):
     
     setAwayEmployees()
 
-def employeeCount():
-    global deviceCount
-    deviceCount = 0
-    employeeCountMsg = ""
 
-    #for employee in deviceHistory['deviceList']:
-    #    if employee['isAway'] is None:
-    #        deviceCount += 1
+def getEmployeeCount():
+    employeeCountMsg = ""
 
     if deviceCount >= NUMBER_EMPLOYEES - 1:
         employeeCountMsg += "COVID WARNING! AREA AT CAPACITY!\n"
