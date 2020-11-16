@@ -1,4 +1,5 @@
-# Personal ID System Using Dashboard and Location Scanning APIs (For Bluetooth Clients)
+# Personal ID System Using Dashboard and Location Scanning APIs
+Tailored for Bluetooth but compatible with WiFi devices
 
 ## Global Variables
 Enter the following into the terminal to avoid hardwired keys/links: 
@@ -19,7 +20,8 @@ echo 'export MERAKI_URL_AP=https://api.meraki.com/api/v1/networks/ **&lt;NETWORK
 echo 'export TEAMS_WEBHOOK_URL=**&lt;WEBHOOK URL&gt;**' >> ~/.bashrc
 
 
-## Setup
+## Setup 
+### courtesy of Alex Hoecht
 1) Meraki Dashboard
     1) Log into Meraki Dashboard
     2) Navigate to Location Scanning settings (<b>Network-wide -> Configure -> General</b>)
