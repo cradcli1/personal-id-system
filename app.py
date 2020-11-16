@@ -30,12 +30,15 @@ def getCmxJSON():
     global deviceCount
     cmxData = request.json
     # cmxdata = json.dumps(cmxdata, indent=2)
+    networkInfo = getNetworkInfo()
+    networkName = networkInfo[0]['name']
 
-    # determine device type
     if cmxData['type'] == "BluetoothDevicesSeen":
-        print("\nNearby Bluetooth Tags:\n")
+        #print("\nNearby Bluetooth Tags:\n")
         btResponse = dashboardBT()
-        employeeCountMsg = setEmployeeInfo(cmxData, btResponse)
+        setEmployeeInfo(cmxData, btResponse)
+        employeeCountMsg = employeeCount()
+        print()
         print(employeeCountMsg)
         #sendMessage(employeeCountMsg)
 
@@ -46,25 +49,29 @@ def getCmxJSON():
             if employee['name'] is not None:
                 # employee currently in range
                 if employee['firstSeen'] is not None:
-                    # returning 
+                    # new or returning
                     if employee['isContinuous'] is False:
-                        nearbyEmployee = "{} just entered <zone>".format(employee['name'])
+                        nearbyEmployee = "{} just entered the {}".format(employee['name'], networkName)
                     # continuously in area
                     elif employee['isContinuous'] is True:
-                        nearbyEmployee = "{} has been in <zone> for".format(employee['name'])
+                        if employee['isMainUser'] is True:
+                            selfMessage = "{} are in the {}".format(employee['name'], networkName)
+                            print("{}".format(selfMessage))
+                            continue
+                        else:
+                            nearbyEmployee = "{} has been in the {} for".format(employee['name'], networkName)
 
                     timeDiff = getTimeDiff(employee['firstSeen'], currentTime)
                     employeeMessage = nearbyEmployee + timeDiff + "."
                     #sendMessage(employeeMessage)
                     print("{}".format(employeeMessage))
                 # employee out of range (employee['firstSeen'] is None)
-                else:
-                    awayEmployee = "{} is no longer in <zone> but was last nearby".format(employee['name'])
+                elif employee['isMainUser'] is False:
+                    awayEmployee = "{} is no longer in the {} but was last nearby".format(employee['name'], networkName)
                     timeDiff = getTimeDiff(employee['lastSeen'], currentTime)
                     employeeMessage = awayEmployee + timeDiff + " ago."
                     # sendMessage(employeeMessage)
                     print("{}".format(employeeMessage))
-        #for clientName in deviceHistory.items():
     elif cmxData['type'] == "DevicesSeen":
         print("\nWiFi Devices Seen:\n")
         wifiResponse = dashboardWifi()

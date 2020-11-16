@@ -1,34 +1,39 @@
 # Global data to be shared among directory
 
+mainUser = 'Andrea'
+
 NUMBER_EMPLOYEES = 4
 
-keyList = ['name', 'firstSeen', 'updatedSeen', 'lastSeen', 'isContinuous', 
-            'isAway', 'hasChanged']
+keyList = ['isMainUser', 'name', 'firstSeen', 'updatedSeen', 'lastSeen', 'isContinuous', 
+            'isAway', 'zone', 'hasChanged']
 deviceHistory = {'deviceList': [{key: None for key in keyList} for number in range(NUMBER_EMPLOYEES)]}
 
-deviceCount = None
+deviceCount = 0 #None
 
 # deviceHistory = 
 #   {
 #       'deviceList': [
 #           {
+#               'isMainUser': <bool>
 #               'name': <string>,
 #               'firstSeen': <int>,
 #               'updatedSeen': <int>,
 #               'lastSeen': <int>,
 #               'isContinuous': <bool>,
 #               'isAway': <bool>,  
-#               'hasChanged': <bool>,
-#               'zone':
+#               'zone': <int>, # 1 or 2
+#               'hasChanged': <bool>
 #           },
 #           {
-#               'name': None,
-#               'firstSeen': None,
-#               'updatedSeen': None,
-#               'lastSeen': None,
-#               'isContinuous': None,
-#               'isAway': None,  
-#               'hasChanged': None
+#               'isMainUser': <bool>
+#               'name': <string>,
+#               'firstSeen': <int>,
+#               'updatedSeen': <int>,
+#               'lastSeen': <int>,
+#               'isContinuous': <bool>,
+#               'isAway': <bool>,  
+#               'zone': <int>, # 1 or 2
+#               'hasChanged': <bool>
 #           }, 
 #           ...
 #       ]
