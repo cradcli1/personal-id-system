@@ -40,10 +40,6 @@ After replacing appropriate **&lt;variables&gt;**, enter the following into the 
         1) COPY the newly created public url
         2) PASTE the public url into the Meraki Dashboard -> Location Scanning Settings -> POST url
             1) Ensure you also select "Bluetooth" as the Radio Type
-    2) From the Meraki Dashboard -> Location Scanning Settings
-        1) COPY the validation string
-        2) PASTE the validation string into the Project -> app.py -> get_validator()
-            1) Paste over the 'HERE'
     
 ## Run Application
 1) From Virtual Environment (created in Setup)
