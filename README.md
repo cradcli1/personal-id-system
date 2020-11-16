@@ -4,17 +4,17 @@ Tailored for Bluetooth but compatible with WiFi devices
 ## Global Variables
 After replacing appropriate **&lt;variables&gt;**, enter the following into the terminal: 
 
-    echo 'export SCANNING_VALIDATOR=**&lt;VALIDATOR&gt;**' >> ~/.bashrc
+    echo 'export SCANNING_VALIDATOR=<VALIDATOR&gt>' >> ~/.bashrc
 
-    echo 'export MERAKI_DASHBOARD_API_KEY=**&lt;KEY&gt;**' >> ~/.bashrc
+    echo 'export MERAKI_DASHBOARD_API_KEY=<KEY>' >> ~/.bashrc
 
-    echo 'export MERAKI_URL_BT=https://api.meraki.com/api/v1/networks/ **&lt;NETWORK ID&gt;**/bluetoothClients?perPage=20' >> ~/.bashrc
+    echo 'export MERAKI_URL_BT=https://api.meraki.com/api/v1/networks/<NETWORK ID>/bluetoothClients?perPage=20' >> ~/.bashrc
 
-    echo 'export MERAKI_URL_WIFI=https://api.meraki.com/api/v1/networks/ **&lt;NETWORK ID&gt;**/clients/' >> ~/.bashrc
+    echo 'export MERAKI_URL_WIFI=https://api.meraki.com/api/v1/networks/<NETWORK ID>/clients/' >> ~/.bashrc
 
-    echo 'export MERAKI_URL_AP=https://api.meraki.com/api/v1/networks/ **&lt;NETWORK ID&gt;**/devices' >> ~/.bashrc
+    echo 'export MERAKI_URL_AP=https://api.meraki.com/api/v1/networks/<NETWORK ID>/devices' >> ~/.bashrc
 
-    echo 'export TEAMS_WEBHOOK_URL=**&lt;WEBHOOK URL&gt;**' >> ~/.bashrc
+    echo 'export TEAMS_WEBHOOK_URL=<WEBHOOK URL>' >> ~/.bashrc
 
 **Restart code editor after entering all lines
 
