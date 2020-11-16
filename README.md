@@ -2,7 +2,7 @@
 Tailored for Bluetooth but compatible with WiFi devices
 
 ## Global Variables
-Enter the following into the terminal to avoid hardwired keys/links: 
+After replacing appropriate **&lt;variables&gt;**, enter the following into the terminal to avoid hardwired keys/links: 
 
 **Restart after entering all lines
 
