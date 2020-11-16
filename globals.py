@@ -5,7 +5,7 @@ mainUser = 'Andrea'
 NUMBER_EMPLOYEES = 4
 
 keyList = ['isMainUser', 'name', 'firstSeen', 'updatedSeen', 'lastSeen', 'isContinuous', 
-            'isAway', 'zone', 'hasChanged']
+            'isAway', 'justLeft', 'zone', 'hasChanged']
 deviceHistory = {'deviceList': [{key: None for key in keyList} for number in range(NUMBER_EMPLOYEES)]}
 
 deviceCount = 0 #None
@@ -21,6 +21,7 @@ deviceCount = 0 #None
 #               'lastSeen': <int>,
 #               'isContinuous': <bool>,
 #               'isAway': <bool>,  
+#               'justLeft': <bool>,  
 #               'zone': <int>, # 1 or 2
 #               'hasChanged': <bool>
 #           },
@@ -32,6 +33,7 @@ deviceCount = 0 #None
 #               'lastSeen': <int>,
 #               'isContinuous': <bool>,
 #               'isAway': <bool>,  
+#               'justLeft': <bool>,  
 #               'zone': <int>, # 1 or 2
 #               'hasChanged': <bool>
 #           }, 

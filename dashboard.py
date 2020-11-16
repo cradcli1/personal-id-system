@@ -27,14 +27,15 @@ def dashboardBT():
     responseBT = json.loads(responseBT.text.encode('utf8'))
     return responseBT    
 
-def getNetworkInfo():
-    url = "https://api.meraki.com/api/v1/organizations/877530/networks"
+def getAPInfo():
+    url = os.environ['MERAKI_URL_AP']
 
     payload = {}
     headers = {
-        'X-Cisco-Meraki-API-Key': '9b14ebe4396e70c0aa903f0915edabf4794ca47b'
+        'X-Cisco-Meraki-API-Key': os.environ['MERAKI_DASHBOARD_API_KEY']
     }
 
-    responseNwk = requests.request("GET", url, headers=headers, data = payload)
-    responseNwk = json.loads(responseNwk.text.encode('utf8'))
-    return responseNwk
+    responseAP = requests.request("GET", url, headers=headers, data = payload)
+    responseAP = json.loads(responseAP.text.encode('utf8'))
+    return responseAP
+

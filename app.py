@@ -30,8 +30,8 @@ def getCmxJSON():
     global deviceCount
     cmxData = request.json
     # cmxdata = json.dumps(cmxdata, indent=2)
-    networkInfo = getNetworkInfo()
-    networkName = networkInfo[0]['name']
+    APInfo = getAPInfo()
+    APName = APInfo[0]['name']
 
     if cmxData['type'] == "BluetoothDevicesSeen":
         #print("\nNearby Bluetooth Tags:\n")
@@ -40,6 +40,7 @@ def getCmxJSON():
         employeeCountMsg = employeeCount()
         print()
         print(employeeCountMsg)
+        print()
         #sendMessage(employeeCountMsg)
 
         currentEpoch = time.time()
@@ -50,26 +51,33 @@ def getCmxJSON():
             
             if employeeName is not None:
                 # employee currently in range
-                if employee['firstSeen'] is not None:
+                if employee['isAway'] is False:
                     # new or returning
                     if employee['isContinuous'] is False:
-                        nearbyEmployee = "{} just entered the {}".format(employeeName, networkName)
+                        nearbyEmployee = "{} just entered the {}".format(employeeName, APName)
                     # continuously in area
                     elif employee['isContinuous'] is True:
                         if employee['isMainUser'] is True:
-                            selfMessage = "{} are in the {}".format(employeeName, networkName)
+                            selfMessage = "{} are in the {}".format(employeeName, APName)
                             print("{}".format(selfMessage))
                             continue
                         else:
-                            nearbyEmployee = "{} has been in the {} for".format(employeeName, networkName)
+                            nearbyEmployee = "{} has been in the {} for".format(employeeName, APName)
 
                     timeDiff = getTimeDiff(employee['firstSeen'], currentTime)
                     employeeMessage = nearbyEmployee + timeDiff + "."
                     #sendMessage(employeeMessage)
                     print("{}".format(employeeMessage))
                 # employee out of range (employee['firstSeen'] is None)
-                elif employee['isMainUser'] is False:
-                    awayEmployee = "{} is no longer in the {} but was last nearby".format(employeeName, networkName)
+                elif employee['isAway'] is True and employee['isMainUser'] is False:
+                    # just left
+                    if employee['justLeft'] is True:
+                        employee['justLeft'] = False
+                        awayEmployee = "{} just left the {}".format(employeeName, APName)
+                    # previously gone
+                    else:
+                        awayEmployee = "{} is no longer in the {} but was last nearby".format(employeeName, APName)
+                    
                     timeDiff = getTimeDiff(employee['lastSeen'], currentTime)
                     employeeMessage = awayEmployee + timeDiff + " ago."
                     # sendMessage(employeeMessage)
