@@ -8,6 +8,11 @@ keyList = ['isMainUser', 'name', 'firstSeen', 'updatedSeen', 'lastSeen', 'isCont
             'isAway', 'justArrived', 'justLeft', 'zone', 'hasChanged']
 deviceHistory = {'deviceList': [{key: None for key in keyList} for number in range(NUMBER_EMPLOYEES)]}
 
+for i in deviceHistory['deviceList']:
+    i['isMainUser'] = False
+    i['justArrived'] = False
+    i['justLeft'] = False
+
 deviceCount = 0
 
 # deviceHistory = {
