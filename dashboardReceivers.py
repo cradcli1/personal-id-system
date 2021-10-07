@@ -33,20 +33,17 @@ def dashboardAPICall(networkID, apiKey, apiVersion=1, test=False):
 
 
 def getDashboardData(networkID, apiKey, apiVersion=1, test=False):
-    returnValue = []
+    returnValue = {}
     try:
         data = dashboardAPICall(networkID, apiKey, apiVersion, test)
         for element in data:
-            returnValue.append(
-                {
-                    "id": element["id"],
-                    "description": element["description"],
-                    "macAddress": element["mac"],
-                    "user": element["user"],
-                    "firstSeen": element["firstSeen"],
-                    "lastSeen": element["lastSeen"]
-                }
-            )
+            returnValue[element["user"]] = {
+                "id": element["id"],
+                "description": element["description"],
+                "macAddress": element["mac"],
+                "firstSeen": element["firstSeen"],
+                "lastSeen": element["lastSeen"]
+            }
         return returnValue
     except:
         return False
