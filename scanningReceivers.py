@@ -5,11 +5,11 @@ import json
 BASEURL = "http://app.meraki.com/api"
 V0EXTENTION = "/v0"
 V1EXTENTION = "/v1"
-TESTURL = "http://localhost:8080"
+TESTURL = "http://localhost:8081"
 APIKEYHEADER = 'X-Cisco-Meraki-API-Key'
 
 
-def dashboardAPICall(networkID, apiKey, apiVersion=1, test=False):
+def scanningAPICall(networkID, apiKey, apiVersion=1, test=False):
     # If connecting to test server
     url = ""
 
@@ -32,15 +32,16 @@ def dashboardAPICall(networkID, apiKey, apiVersion=1, test=False):
     return responseBT
 
 
-def getDashboardData(networkID, apiKey, apiVersion=1, test=False):
+def getScanningData(networkID, apiKey, apiVersion=1, test=False):
     returnValue = {}
     try:
-        data = dashboardAPICall(networkID, apiKey, apiVersion, test)
-        for element in data:
-            returnValue[element["user"]] = {
-                "id": element["id"],
-                "description": element["description"],
-                "macAddress": element["mac"],
+        data = scanningAPICall(networkID, apiKey, apiVersion, test)
+
+        for element in data["data"]["observations"]:
+            returnValue[element["clientMac"]] = {
+                "x": element["locations"][len(element["locations"])-1]["x"],
+                "y": element["locations"][len(element["locations"])-1]["y"],
+                "roomID": element["locations"][len(element["locations"])-1]["floorPlanId"]
             }
         return returnValue
     except:
