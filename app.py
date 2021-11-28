@@ -10,6 +10,11 @@ import time
 datastore = [{"name": "Christopher Radcliffe",
               "lastState": "", "whereToSend": ""}]
 APIHOOK = "https://hooks.slack.com/services/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"
+def addPersonToDataStore(name, whereToSend):
+    for element in datastore
+        if element["name"] == name:
+            return
+    datastore.append({"name": name, "lastState": "", "whereToSend": whereToSend})
 
 
 def main():
