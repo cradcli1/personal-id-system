@@ -1,0 +1,5 @@
+{
+  "webhookUrl": "put your public ip address in this place",
+  "token": "put your webex bot token in this place",
+  "port": 3000
+}
