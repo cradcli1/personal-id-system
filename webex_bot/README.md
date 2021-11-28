@@ -17,7 +17,7 @@
  
 4. Copy the ip address displayed in the ngrok window, ie: : https://1234.eu.ngrok.io
 
-5. Edit 'config-template.json' into 'config.json'
+5. Change file name 'config-template.json' into 'config.json'
 
 6. Edit  `config.json` with the following values:
 
