@@ -17,12 +17,14 @@
  
 4. Copy the ip address displayed in the ngrok window, ie: : https://1234.eu.ngrok.io
 
-5. Edit  `config.json` with the following values:
+5. Edit 'config-template.json' into 'config.json'
+
+6. Edit  `config.json` with the following values:
 
 * token - Set this to the token for your bot that you got in step 1
 * port - Set this to the port you set when you started ngrok in step 3 (ie: 3000)
 * webhookUrl - Set this to the ip address that you copied in step 4
 
-6. Turn on your bot server with ```npm start```
+7. Turn on your bot server with ```npm start```
 
-7. Add the bot (by its username) to the spaces you want it to be in Webex Teams
+8. Add the bot (by its username) to the spaces you want it to be in Webex Teams
