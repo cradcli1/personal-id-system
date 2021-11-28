@@ -11,28 +11,27 @@ datastore = [{"name": "Christopher Radcliffe",
               "lastState": "", "whereToSend": ""}]
 APIHOOK = "https://hooks.slack.com/services/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"
 def addPersonToDataStore(name, whereToSend):
-    for element in datastore
+    for element in datastore:
         if element["name"] == name:
             return
     datastore.append({"name": name, "lastState": "", "whereToSend": whereToSend})
+def whoIsAround(user, APIResponce):
+    givenUserResponce = {}
+    room = APIResponce[user]["roomID"]
+    for people in APIResponce:
+        if APIResponce[people]["roomID"] == room and people != user:
+            givenUserResponce[people] = APIResponce[people]
+    return givenUserResponce
 
+def findUserLocation(personToFind, APIResponce):
+    return APIResponce[personToFind]["floorPlanName"]
 
-def main():
+def blindUserUpdatesMain():
     APIResponce = getData("mock", 0, 0, True)
     if APIResponce:
         messages = []
         for blindUser in datastore:
-            givenUserResponce = {}
-            # print(blindUser)
-            room = APIResponce[blindUser["name"]]["roomID"]
-            # print(room)
-            for people in APIResponce:
-                print(people != blindUser["name"])
-                if APIResponce[people]["roomID"] == room and people != blindUser["name"]:
-                    givenUserResponce[people] = APIResponce[people]
-            formatedUserResponce = formatWhoIsAround(givenUserResponce)
-            print(formatedUserResponce)
-            print(blindUser["lastState"])
+            formatedUserResponce = formatWhoIsAround(whoIsAround(blindUser["name"], APIResponce))
             if blindUser["lastState"] != formatedUserResponce:
                 messages.append(
                     {formatedUserResponce, blindUser["whereToSend"]})
@@ -45,7 +44,9 @@ def main():
     else:
         print("Stuff")
 
-schedule.every(1).minutes.do(main)
-main()
+
+
+schedule.every(1).minutes.do(blindUserUpdatesMain)
+blindUserUpdatesMain()
 while True:
     schedule.run_pending()

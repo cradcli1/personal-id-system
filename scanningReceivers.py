@@ -41,7 +41,8 @@ def getScanningData(networkID, apiKey, apiVersion=1, test=False):
             returnValue[element["clientMac"]] = {
                 "x": element["locations"][len(element["locations"])-1]["x"],
                 "y": element["locations"][len(element["locations"])-1]["y"],
-                "roomID": element["locations"][len(element["locations"])-1]["floorPlanId"]
+                "roomID": element["locations"][len(element["locations"])-1]["floorPlanId"],
+                "floorPlanName": element["locations"][len(element["locations"])-1]["floorPlanName"]
             }
         return returnValue
     except:

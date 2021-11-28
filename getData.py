@@ -22,5 +22,10 @@ def getData(networkID, apiKey, apiVersion=1, test=False):
                                                                               ["macAddress"]]["roomID"]
             except:
                 break
+            try:
+                dashboardAPIResponce[element]["floorPlanName"] = scanningAPIResponce[dashboardAPIResponce[element]
+                                                                              ["macAddress"]]["floorPlanName"]
+            except:
+                break
         return dashboardAPIResponce
     return False
