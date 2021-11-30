@@ -10,23 +10,43 @@ from blindUserPath import blindUserUpdates
 from array import *
 import schedule
 import time
+import zmq
+import threading
 
 datastore = [{"name": "Christopher Radcliffe",
               "lastState": "", "whereToSend": ""}]
-APIHOOK = "https://hooks.slack.com/services/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"
+
+
 def addPersonToDataStore(name, whereToSend):
     for element in datastore:
         if element["name"] == name:
             return
     datastore.append({"name": name, "lastState": "", "whereToSend": whereToSend})
 
+#Set up communication socket
+context = zmq.Context()
+socket = context.socket(zmq.REP)
+socket.bind("tcp://*:5555")
 
-#Sets blindUserUpdateS to run every minute
-schedule.every(1).minutes.do(blindUserUpdates, datastore = datastore)
+def blindUserThread():
+    #Sets blindUserUpdate to run every minute
+    schedule.every(1).minutes.do(blindUserUpdates, datastore = datastore)
+    #Runs it imediatly
+    blindUserUpdates(datastore)
+    #Keeps the programming running
+    while True:
+        schedule.run_pending()
+        #Whenever slack message comes through, call determineUserInput(user, userInput, webhook)
+def intergrationThread():
+    while True:
+        message = socket.recv()
+        split = message.split('|')
+        determineUserInput(split[0], split[1])
 
-#Runs it imediatly
-blindUserUpdates(datastore)
 
-#Keeps the programming running
-while True:
-    schedule.run_pending()
+t1 = threading.Thread(target=blindUserThread, name='t1')
+t2 = threading.Thread(target=intergrationThread, name='t2')
+t1.start()
+t2.start()
+t1.join()
+t2.join()
