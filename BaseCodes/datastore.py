@@ -1,5 +1,5 @@
 datastore = [{"name": "Christopher Radcliffe",
-              "lastState": "", "whereToSend": ""}]
+              "lastState": ""}]
 
 
 def addPersonToDataStore(name):

@@ -26,7 +26,7 @@ socket2.connect("tcp://localhost:6666")
 
 def blindUserThread():
     #Sets blindUserUpdate to run every minute
-    schedule.every(1).minutes.do(blindUserUpdates, datastore = datastore)
+    schedule.every(1).minutes.do(blindUserUpdates, datastore = datastore, socket = socket2)
     #Runs it imediatly
     blindUserUpdates(datastore, socket2)
     #Keeps the programming running

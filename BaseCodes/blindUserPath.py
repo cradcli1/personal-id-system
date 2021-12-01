@@ -8,17 +8,17 @@ import zmq
 def blindUserUpdates(datastore, socket):
     APIResponce = getData("mock", 0, 0, True)
     if APIResponce:
-        messages = []
         for blindUser in datastore:
-            formatedUserResponce = formatWhoIsAround(whoIsAround(blindUser["name"], APIResponce))
-            if blindUser["lastState"] != formatedUserResponce:
-                messages.append(
-                    {formatedUserResponce, blindUser["whereToSend"]})
-                blindUser["lastState"] = formatedUserResponce
-        try:
-            print("SENDING MESSAGE :" + str(messages))
-            socket.send_string(messages)
-        except:
-            print("FAILED TO FORMAT OR SEND DATA")
+            try:
+                formatedUserResponce = formatWhoIsAround(whoIsAround(blindUser["name"], APIResponce))
+                if blindUser["lastState"] != formatedUserResponce:
+                    try:
+                        print("SENDING MESSAGE TO " + blindUser["name"] + ": \n" + str(formatedUserResponce))
+                        socket.send_string(blindUser["name"] + " | " + formatedUserResponce)
+                    except:
+                        print("FAILED TO SEND DATA")
+                    blindUser["lastState"] = formatedUserResponce
+            except:
+                print("Blind user is not here")
     else:
         print("FAILED TO RECIEVE  DATA")

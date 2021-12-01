@@ -34,15 +34,15 @@ def determineUserInput(user, userInput, socket):
         
         data = getData("mock", 0, 0, True)
         if data:
-            #try:
+            try:
                 people = userInput[10:]
                 print(people) 
                 print(len(people)) 
                 message = findUserLocation(people, data)
                 print("Slack Message: \n" + message)
                 socket.send_string(message)
-            #except:
-                #socket.send(b"Failed")
+            except:
+                socket.send(b"Failed")
         else:
             socket.send_string("Failed")
     
@@ -51,6 +51,5 @@ def determineUserInput(user, userInput, socket):
         addPersonToDataStore(user)
         socket.send_string("Done")
     else: 
-        print("Running code to add a blind person")
-        socket.send_string("Error")
-        #SEND ERROR MESSAGE !!!!!!!HOANG
+        print("Request Not Found")
+        socket.send_string("Request Not Found")
