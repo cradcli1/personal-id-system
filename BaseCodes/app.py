@@ -8,6 +8,7 @@ from slackWebhooks import sendMessage
 from getData import getData
 from blindUserPath import blindUserUpdates
 from array import *
+from determineUserInput import determineUserInput
 import schedule
 import time
 import zmq
@@ -40,7 +41,9 @@ def blindUserThread():
 def intergrationThread():
     while True:
         message = socket.recv()
-        split = message.split('|')
+        result = message.decode()
+        split = result.split('|')
+        
         determineUserInput(split[0], split[1])
 
 

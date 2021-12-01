@@ -2,6 +2,7 @@ import re
 from app import addPersonToDataStore
 from messageFormatting import formatWhoIsAround
 from basicDataSearching import *
+from getData import *
 import zmq
 
 
@@ -15,28 +16,28 @@ import zmq
 def determineUserInput(user, userInput):
     lower = userInput.lower()
     
-    if 'who is around me' is in lower:
+    if 'who is around me' in lower:
         data = getData("mock", 0, 0, True)
         if data:
             message = formatWhoIsAround(whoIsAround(user, data))
             print("Slack Message: \n" + message)
             socket.send(message)
         else:
-            socket.send("Failed")
+            socket.send(b"Failed")
     
-    else if 'where is ' is in lower:
+    elif 'where is ' in lower:
         data = getData("mock", 0, 0, True)
         if data:
             message = findUserLocation(user, data)
             socket.send(message)
         else:
-            socket.send("Failed")
+            socket.send(b"Failed")
     
-    else if 'i am blind' is in lower:
+    elif 'i am blind' in lower:
         print("Running code to add a blind person")
         addPersonToDataStore(user, webhook)
-        socket.send("Done")
+        socket.send(b"Done")
     else: 
         print("Running code to add a blind person")
-        socket.send("Error")
+        socket.send(b"Error")
         #SEND ERROR MESSAGE !!!!!!!HOANG
