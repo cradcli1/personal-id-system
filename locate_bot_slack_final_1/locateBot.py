@@ -17,56 +17,77 @@ app = App(
     signing_secret=os.environ.get("SLACK_SIGNING_SECRET")
 )
 
-context = zmq.Context()
-socket = context.socket(zmq.REQ)
-socket.connect("tcp://localhost:5555")
-
 context1 = zmq.Context()
-socket1 = context.socket(zmq.REQ)
-socket1.bind("tcp://*:6666")
+socket1 = context1.socket(zmq.REQ)
+socket1.connect("tcp://localhost:5555")
+
+context2 = zmq.Context()
+socket2 = context2.socket(zmq.REP)
+socket2.bind("tcp://*:6666")
 
 
 logger = logging.getLogger(__name__)
 #@app.chat_postMessage(channel='#slack-integration', text = "Hello World")
 
-message = socket1.recv()
-decoded = message.decode()
-app.client.chat_postMessage(
-        text = decoded
-    )
+
 
 # Add functionality here
+
 @app.middleware  # or app.use(log_request)
 def log_request(logger, body, next):
     logger.debug(body)
     return next()
 
-    
-
 #Obtain name of person users want to locate
 @app.event("app_mention")
 def mention_response(client, event, body, say, logger):
     logger.info(body)
-    message = event["text"][15:]
+    message = event["text"][15:].lower()
     user = event["user"]
+    say(f"{app.client.users_identity}")
     channel_id = event["channel"]
-    say(f"Hi there <@{user}>! You wish to locate this person: {message}")
-    # compare obtained name to storage to get appropriate response
+    if 'where is ' in message:
+        say(f"Hi there <@{user}>! You wish to know {message}")
+        # compare obtained name to storage to get appropriate response
     
-    # Set up communication socket to talk to server
+        # Set up communication socket to talk to server
 
 
-    #send request
-    response = user + " | " + message
-    socket.send_string(response)
+        #send request
+        print(user)
+        print(message)
+        response = user + " | " + message
+        print(response)
+        socket1.send_string(response)
 
-    #obtain response and post to channel where the message was posted in 
-    obtain = socket.recv()
-    decoded = obtain.decode()
-    client.chat_postMessage(
-        channel = channel_id,
-        text = decoded
-    )
+        #obtain response and post to channel where the message was posted in 
+        obtain = socket1.recv()
+        decoded = obtain.decode()
+        client.chat_postMessage(
+            channel = channel_id,
+            text = decoded
+        )
+    elif 'who is around me' in message:
+        say(f"Hi there <@{user}>! You wish to know who is around you")
+        # compare obtained name to storage to get appropriate response
+    
+        # Set up communication socket to talk to server
+
+
+        #send request
+        print(user)
+        print(message)
+        response = user + " | " + message
+        print(response)
+        socket1.send_string(response)
+
+        #obtain response and post to channel where the message was posted in 
+        obtain = socket1.recv()
+        decoded = obtain.decode()
+        client.chat_postMessage(
+            channel = channel_id,
+            text = decoded
+        )
     
 
 # @app.message(re.compile("(hi|Hi|hello|Hello|hey|Hey)"))
@@ -84,22 +105,45 @@ def mention_response(client, event, body, say, logger):
 @app.event("message")
 def handle_message_events(event, body, say, logger):
     logger.info(body)
-    message = event["text"]
+    message = event["text"].lower()
     user = event["user"]
-    say(f"Hello, you wish to locate this person: {message}")
-    # compare obtained name to storage to get appropriate response
-    # response = ...
-    # say(f"{response}")
+    if 'where is ' in message:
+        say(f"Hi there <@{user}>! You wish to know {message}")
+        # compare obtained name to storage to get appropriate response
+        #send request
+        print(user)
+        print(message)
+        response = user + " | " + message
+        print(response)
+        socket1.send_string(response)
 
-    # #send request
-    # socket.send(f"{user} | {message}")
-    response = user + " | " + message
-    socket.send_string(response)
+        #obtain response and post to channel where the message was posted in 
+        obtain = socket1.recv()
+        decoded = obtain.decode()
+        say(f"{decoded}")
+    elif 'who is around me' in message:
+        say(f"Hi there <@{user}>! You wish to know who is around you")
+        # compare obtained name to storage to get appropriate response
+    
+        # Set up communication socket to talk to server
 
-    # #obtain response and reply back to use
-    obtain = socket.recv()
-    decoded = obtain.decode()
-    say(f"{decoded}")
+
+        #send request
+        print(user)
+        print(message)
+        response = user + " | " + message
+        print(response)
+        socket1.send_string(response)
+
+        #obtain response and post to channel where the message was posted in 
+        obtain = socket1.recv()
+        decoded = obtain.decode()
+        say(f"{decoded}")
+    elif 'i am blind' in message:
+        say(f"Hi there <@{user}>! Since you are blind, we will be sending you automatic updates")
+        message = socket2.recv()
+        decoded = message.decode()
+        print(decoded)
 
 
 @app.error

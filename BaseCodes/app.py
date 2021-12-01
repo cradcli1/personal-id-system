@@ -20,8 +20,9 @@ import threading
 context1 = zmq.Context()
 socket1 = context1.socket(zmq.REP)
 socket1.bind("tcp://*:5555")
+
 context2 = zmq.Context()
-socket2 = context2.socket(zmq.REP)
+socket2 = context2.socket(zmq.REQ)
 socket2.connect("tcp://localhost:6666")
 
 def blindUserThread():
