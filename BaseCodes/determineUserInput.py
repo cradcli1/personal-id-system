@@ -20,13 +20,15 @@ def determineUserInput(user, userInput, socket):
     if 'who is around me' in lower:
         data = getData("mock", 0, 0, True)
         if data:
-            try: 
+            #try: 
+                print(user)
+                print(len(user))
                 whoIsNearby = whoIsAround(user, data)
                 message = formatWhoIsAround(whoIsNearby)
                 print("Slack Message: \n" + message)
                 socket.send_string(message)
-            except:
-                socket.send(b"Failed")
+            #except:
+                #socket.send_string("Failed")
         else:
             socket.send(b"Failed")
     
@@ -42,14 +44,14 @@ def determineUserInput(user, userInput, socket):
                 print("Slack Message: \n" + message)
                 socket.send_string(message)
             except:
-                socket.send(b"Failed")
+                socket.send_string("Failed")
         else:
             socket.send_string("Failed")
     
     elif 'i am blind' in lower:
         print("Running code to add a blind person")
         addPersonToDataStore(user)
-        socket.send_string("Done")
+        socket.send_string("You have been added as a blind person")
     else: 
         print("Request Not Found")
         socket.send_string("Request Not Found")

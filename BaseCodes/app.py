@@ -39,8 +39,9 @@ def intergrationThread():
         message = socket1.recv()
         result = message.decode()
         split = result.split('|')
+        print("Received: ")
         
-        determineUserInput(split[0], split[1], socket1)
+        determineUserInput(split[0][1:-1], split[1], socket1)
 
 
 t1 = threading.Thread(target=blindUserThread, name='t1')

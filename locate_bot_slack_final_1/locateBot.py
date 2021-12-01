@@ -33,6 +33,8 @@ logger = logging.getLogger(__name__)
 
 # Add functionality here
 
+name_store = []
+
 @app.middleware  # or app.use(log_request)
 def log_request(logger, body, next):
     logger.debug(body)
@@ -42,21 +44,17 @@ def log_request(logger, body, next):
 @app.event("app_mention")
 def mention_response(client, event, body, say, logger):
     logger.info(body)
-    message = event["text"][15:].lower()
+    message = event["text"][15:]
+    messageSplit = message.split('|') #split between message [0] and username [1]
     user = event["user"]
-    say(f"{app.client.users_identity}")
     channel_id = event["channel"]
     if 'where is ' in message:
-        say(f"Hi there <@{user}>! You wish to know {message}")
-        # compare obtained name to storage to get appropriate response
-    
-        # Set up communication socket to talk to server
-
+        say(f"Hi there <@{user}>! You wish to know {messageSplit[0]}")
 
         #send request
-        print(user)
-        print(message)
-        response = user + " | " + message
+        print(messageSplit[1])
+        print(messageSplit[0][:-1])
+        response = messageSplit[1] + " | " + messageSplit[0][:-1]
         print(response)
         socket1.send_string(response)
 
@@ -75,9 +73,9 @@ def mention_response(client, event, body, say, logger):
 
 
         #send request
-        print(user)
-        print(message)
-        response = user + " | " + message
+        print(messageSplit[1])
+        print(messageSplit[0][:-1])
+        response = messageSplit[1] + " | " + messageSplit[0][:-1]
         print(response)
         socket1.send_string(response)
 
@@ -103,17 +101,18 @@ def mention_response(client, event, body, say, logger):
 
 # Obtain the name of the person whose location is wanted in the message of the user
 @app.event("message")
-def handle_message_events(event, body, say, logger):
+def handle_message_events(client, event, body, say, logger):
     logger.info(body)
-    message = event["text"].lower()
+    message = event["text"]
+    messageSplit = message.split('|')
     user = event["user"]
     if 'where is ' in message:
-        say(f"Hi there <@{user}>! You wish to know {message}")
+        say(f"Hi there <@{user}>! You wish to know {messageSplit[0]}")
         # compare obtained name to storage to get appropriate response
         #send request
         print(user)
         print(message)
-        response = user + " | " + message
+        response = messageSplit[1] + " | " + messageSplit[0][:-1]
         print(response)
         socket1.send_string(response)
 
@@ -129,9 +128,9 @@ def handle_message_events(event, body, say, logger):
 
 
         #send request
-        print(user)
-        print(message)
-        response = user + " | " + message
+        print(messageSplit[1])
+        print(messageSplit[0][:-1])
+        response = messageSplit[1] + " | " + messageSplit[0][:-1]
         print(response)
         socket1.send_string(response)
 
@@ -141,9 +140,15 @@ def handle_message_events(event, body, say, logger):
         say(f"{decoded}")
     elif 'i am blind' in message:
         say(f"Hi there <@{user}>! Since you are blind, we will be sending you automatic updates")
-        message = socket2.recv()
+
+        response = str(messageSplit[0][:-1]) + " | " + str(messageSplit[1][1:]) + " | " + user[1:]
+        print(response)
+
+        socket1.send_string(response)
+
+        message = socket1.recv()
         decoded = message.decode()
-        print(decoded)
+        say(f"{decoded}")
 
 
 @app.error

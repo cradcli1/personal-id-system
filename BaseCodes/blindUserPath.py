@@ -15,6 +15,7 @@ def blindUserUpdates(datastore, socket):
                     try:
                         print("SENDING MESSAGE TO " + blindUser["name"] + ": \n" + str(formatedUserResponce))
                         socket.send_string(blindUser["name"] + " | " + formatedUserResponce)
+                        print(blindUser["name"] + " | " + formatedUserResponce)
                     except:
                         print("FAILED TO SEND DATA")
                     blindUser["lastState"] = formatedUserResponce
