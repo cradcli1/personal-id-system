@@ -1,8 +1,8 @@
 import re
-from app import addPersonToDataStore
 from messageFormatting import formatWhoIsAround
 from basicDataSearching import *
 from getData import *
+from datastore import *
 import zmq
 
 

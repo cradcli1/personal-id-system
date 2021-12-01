@@ -9,20 +9,12 @@ from getData import getData
 from blindUserPath import blindUserUpdates
 from array import *
 from determineUserInput import determineUserInput
+from datastore import *
 import schedule
 import time
 import zmq
 import threading
 
-datastore = [{"name": "Christopher Radcliffe",
-              "lastState": "", "whereToSend": ""}]
-
-
-def addPersonToDataStore(name, whereToSend):
-    for element in datastore:
-        if element["name"] == name:
-            return
-    datastore.append({"name": name, "lastState": "", "whereToSend": whereToSend})
 
 #Set up communication socket
 context = zmq.Context()
