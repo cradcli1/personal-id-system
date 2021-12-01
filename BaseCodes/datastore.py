@@ -1,5 +1,4 @@
-datastore = [{"name": "Christopher Radcliffe",
-              "lastState": ""}]
+datastore = []
 
 
 def addPersonToDataStore(name, userID):
