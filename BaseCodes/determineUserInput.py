@@ -13,7 +13,7 @@ import zmq
 
 #User: name of user, string
 #input: user input, string
-def determineUserInput(user, userInput, socket):
+def determineUserInput(user, userInput, userID, socket):
     lower = userInput.lower()
     print(lower)
     
@@ -50,7 +50,7 @@ def determineUserInput(user, userInput, socket):
     
     elif 'i am blind' in lower:
         print("Running code to add a blind person")
-        addPersonToDataStore(user)
+        addPersonToDataStore(user, userID)
         socket.send_string("You have been added as a blind person")
     else: 
         print("Request Not Found")
