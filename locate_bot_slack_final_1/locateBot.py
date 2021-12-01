@@ -7,6 +7,7 @@ from slack_bolt.adapter.socket_mode import SocketModeHandler
 from dotenv import load_dotenv
 from pathlib import Path
 from textCompare import *
+import threading
 
 env_path = Path('.') / '.env'
 
@@ -24,6 +25,7 @@ socket1.connect("tcp://localhost:5555")
 context2 = zmq.Context()
 socket2 = context2.socket(zmq.REP)
 socket2.bind("tcp://*:6666")
+
 
 
 logger = logging.getLogger(__name__)
@@ -54,7 +56,7 @@ def mention_response(client, event, body, say, logger):
         #send request
         print(messageSplit[1])
         print(messageSplit[0][:-1])
-        response = messageSplit[1] + " | " + messageSplit[0][:-1]
+        response = messageSplit[1] + " | " + messageSplit[0][:-1] + " | " + user[1:]
         print(response)
         socket1.send_string(response)
 
@@ -75,7 +77,7 @@ def mention_response(client, event, body, say, logger):
         #send request
         print(messageSplit[1])
         print(messageSplit[0][:-1])
-        response = messageSplit[1] + " | " + messageSplit[0][:-1]
+        response = messageSplit[1] + " | " + messageSplit[0][:-1] + " | " + user[1:]
         print(response)
         socket1.send_string(response)
 
@@ -86,6 +88,7 @@ def mention_response(client, event, body, say, logger):
             channel = channel_id,
             text = decoded
         )
+
     
 
 # @app.message(re.compile("(hi|Hi|hello|Hello|hey|Hey)"))
@@ -101,9 +104,11 @@ def mention_response(client, event, body, say, logger):
 
 # Obtain the name of the person whose location is wanted in the message of the user
 @app.event("message")
-def handle_message_events(client, event, body, say, logger):
+def handle_message_events(client, event, body, say, logger, blindFunctionalityRunning):
     logger.info(body)
+    blindFunctionalityRunning = False
     message = event["text"]
+    channel_id = event["channel"]
     messageSplit = message.split('|')
     user = event["user"]
     if 'where is ' in message:
@@ -112,7 +117,7 @@ def handle_message_events(client, event, body, say, logger):
         #send request
         print(user)
         print(message)
-        response = messageSplit[1] + " | " + messageSplit[0][:-1]
+        response = messageSplit[1] + " | " + messageSplit[0][:-1] + " | " + user[1:]
         print(response)
         socket1.send_string(response)
 
@@ -130,7 +135,7 @@ def handle_message_events(client, event, body, say, logger):
         #send request
         print(messageSplit[1])
         print(messageSplit[0][:-1])
-        response = messageSplit[1] + " | " + messageSplit[0][:-1]
+        response = messageSplit[1] + " | " + messageSplit[0][:-1] + " | " + user[1:]
         print(response)
         socket1.send_string(response)
 
@@ -141,7 +146,7 @@ def handle_message_events(client, event, body, say, logger):
     elif 'i am blind' in message:
         say(f"Hi there <@{user}>! Since you are blind, we will be sending you automatic updates")
 
-        response = str(messageSplit[1][1:]) + " | " + str(messageSplit[0][:-1])  + " | " + user[1:]
+        response = str(messageSplit[1]) + " | " + str(messageSplit[0][:-1])  + " | " + user[1:]
         print(response)
 
         socket1.send_string(response)
@@ -150,16 +155,39 @@ def handle_message_events(client, event, body, say, logger):
         decoded = message.decode()
         say(f"{decoded}")
 
+        #ONLY RUN ONCE, NOT EVERY I AM BLIND!!!!
+        if not blindFunctionalityRunning: 
+            blindFunctionalityRunning = True
+            while True:
+                result = receiveBlindData()
+                client.chat_postMessage(
+                    channel =  channel_id,
+                    text = result[13:]
+                )
+                
+
+
+def receiveBlindData():
+    print("hello")
+    message = socket2.recv()
+    socket2.send(b"Hello")
+    decoded = message.decode()
+    print("." + decoded[:10] + "." + decoded[13:])
+    return decoded
+
+
 
 @app.error
 def global_error_handler(error, body, logger):
     logger.exception(error)
     logger.info(body)
 
+
 def main():
+
     handler = SocketModeHandler(app, os.environ.get("SLACK_APP_TOKEN"))
     handler.start()
 
 # Start your app
-if __name__ == "__main__":
+if __name__ == "__main__": 
     main()

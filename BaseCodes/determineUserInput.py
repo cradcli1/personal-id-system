@@ -37,7 +37,7 @@ def determineUserInput(user, userInput, userID, socket):
         data = getData("mock", 0, 0, True)
         if data:
             try:
-                people = userInput[10:]
+                people = userInput[9:]
                 print(people) 
                 print(len(people)) 
                 message = findUserLocation(people, data)
