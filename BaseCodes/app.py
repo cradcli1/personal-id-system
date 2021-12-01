@@ -17,26 +17,29 @@ import threading
 
 
 #Set up communication socket
-context = zmq.Context()
-socket = context.socket(zmq.REP)
-socket.bind("tcp://*:5555")
+context1 = zmq.Context()
+socket1 = context1.socket(zmq.REP)
+socket1.bind("tcp://*:5555")
+context2 = zmq.Context()
+socket2 = context2.socket(zmq.REP)
+socket2.connect("tcp://localhost:6666")
 
 def blindUserThread():
     #Sets blindUserUpdate to run every minute
     schedule.every(1).minutes.do(blindUserUpdates, datastore = datastore)
     #Runs it imediatly
-    blindUserUpdates(datastore)
+    blindUserUpdates(datastore, socket2)
     #Keeps the programming running
     while True:
         schedule.run_pending()
         #Whenever slack message comes through, call determineUserInput(user, userInput, webhook)
 def intergrationThread():
     while True:
-        message = socket.recv()
+        message = socket1.recv()
         result = message.decode()
         split = result.split('|')
         
-        determineUserInput(split[0], split[1], socket)
+        determineUserInput(split[0], split[1], socket1)
 
 
 t1 = threading.Thread(target=blindUserThread, name='t1')
