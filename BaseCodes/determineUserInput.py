@@ -13,31 +13,44 @@ import zmq
 
 #User: name of user, string
 #input: user input, string
-def determineUserInput(user, userInput):
+def determineUserInput(user, userInput, socket):
     lower = userInput.lower()
+    print(lower)
     
     if 'who is around me' in lower:
         data = getData("mock", 0, 0, True)
         if data:
-            message = formatWhoIsAround(whoIsAround(user, data))
-            print("Slack Message: \n" + message)
-            socket.send(message)
+            try: 
+                whoIsNearby = whoIsAround(user, data)
+                message = formatWhoIsAround(whoIsNearby)
+                print("Slack Message: \n" + message)
+                socket.send_string(message)
+            except:
+                socket.send(b"Failed")
         else:
             socket.send(b"Failed")
     
     elif 'where is ' in lower:
+        
         data = getData("mock", 0, 0, True)
         if data:
-            message = findUserLocation(user, data)
-            socket.send(message)
+            #try:
+                people = userInput[10:]
+                print(people) 
+                print(len(people)) 
+                message = findUserLocation(people, data)
+                print("Slack Message: \n" + message)
+                socket.send_string(message)
+            #except:
+                #socket.send(b"Failed")
         else:
-            socket.send(b"Failed")
+            socket.send_string("Failed")
     
     elif 'i am blind' in lower:
         print("Running code to add a blind person")
-        addPersonToDataStore(user, webhook)
-        socket.send(b"Done")
+        addPersonToDataStore(user)
+        socket.send_string("Done")
     else: 
         print("Running code to add a blind person")
-        socket.send(b"Error")
+        socket.send_string("Error")
         #SEND ERROR MESSAGE !!!!!!!HOANG

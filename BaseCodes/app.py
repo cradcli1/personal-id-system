@@ -36,7 +36,7 @@ def intergrationThread():
         result = message.decode()
         split = result.split('|')
         
-        determineUserInput(split[0], split[1])
+        determineUserInput(split[0], split[1], socket)
 
 
 t1 = threading.Thread(target=blindUserThread, name='t1')

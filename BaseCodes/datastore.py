@@ -2,8 +2,8 @@ datastore = [{"name": "Christopher Radcliffe",
               "lastState": "", "whereToSend": ""}]
 
 
-def addPersonToDataStore(name, whereToSend):
+def addPersonToDataStore(name):
     for element in datastore:
         if element["name"] == name:
             return
-    datastore.append({"name": name, "lastState": "", "whereToSend": whereToSend})
+    datastore.append({"name": name, "lastState": ""})
