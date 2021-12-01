@@ -141,7 +141,7 @@ def handle_message_events(client, event, body, say, logger):
     elif 'i am blind' in message:
         say(f"Hi there <@{user}>! Since you are blind, we will be sending you automatic updates")
 
-        response = str(messageSplit[0][:-1]) + " | " + str(messageSplit[1][1:]) + " | " + user[1:]
+        response = str(messageSplit[1][1:]) + " | " + str(messageSplit[0][:-1])  + " | " + user[1:]
         print(response)
 
         socket1.send_string(response)
