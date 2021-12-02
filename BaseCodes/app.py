@@ -34,8 +34,11 @@ def blindUserThread():
     while True:
         schedule.run_pending()
         #Whenever slack message comes through, call determineUserInput(user, userInput, webhook)
+
+
 def intergrationThread():
     while True:
+        
         message = socket1.recv()
         result = message.decode()
         split = result.split('|')
