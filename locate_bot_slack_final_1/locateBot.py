@@ -56,7 +56,7 @@ def mention_response(client, event, body, say, logger):
         #send request
         print(messageSplit[1])
         print(messageSplit[0][:-1])
-        response = messageSplit[1] + " | " + messageSplit[0][:-1] + " | " + user[1:]
+        response = messageSplit[1] + " | " + messageSplit[0][:-1] + " | " + channel_id[1:]
         print(response)
         socket1.send_string(response)
 
@@ -77,7 +77,7 @@ def mention_response(client, event, body, say, logger):
         #send request
         print(messageSplit[1])
         print(messageSplit[0][:-1])
-        response = messageSplit[1] + " | " + messageSplit[0][:-1] + " | " + user[1:]
+        response = messageSplit[1] + " | " + messageSplit[0][:-1] + " | " + channel_id[1:]
         print(response)
         socket1.send_string(response)
 
@@ -117,7 +117,7 @@ def handle_message_events(client, event, body, say, logger, blindFunctionalityRu
         #send request
         print(user)
         print(message)
-        response = messageSplit[1] + " | " + messageSplit[0][:-1] + " | " + user[1:]
+        response = messageSplit[1] + " | " + messageSplit[0][:-1] + " | " + channel_id[1:]
         print(response)
         socket1.send_string(response)
 
@@ -135,7 +135,7 @@ def handle_message_events(client, event, body, say, logger, blindFunctionalityRu
         #send request
         print(messageSplit[1])
         print(messageSplit[0][:-1])
-        response = messageSplit[1] + " | " + messageSplit[0][:-1] + " | " + user[1:]
+        response = messageSplit[1] + " | " + messageSplit[0][:-1] + " | " + channel_id[1:]
         print(response)
         socket1.send_string(response)
 
@@ -145,8 +145,9 @@ def handle_message_events(client, event, body, say, logger, blindFunctionalityRu
         say(f"{decoded}")
     elif 'i am blind' in message:
         say(f"Hi there <@{user}>! Since you are blind, we will be sending you automatic updates")
+        print(channel_id)
 
-        response = str(messageSplit[1]) + " | " + str(messageSplit[0][:-1])  + " | " + user[1:]
+        response = str(messageSplit[1]) + " | " + str(messageSplit[0][:-1])  + " | " + channel_id
         print(response)
 
         socket1.send_string(response)
@@ -160,9 +161,11 @@ def handle_message_events(client, event, body, say, logger, blindFunctionalityRu
             blindFunctionalityRunning = True
             while True:
                 result = receiveBlindData()
+                print(result[:11])
+                print(result[14:])
                 client.chat_postMessage(
-                    channel =  channel_id,
-                    text = result[13:]
+                    channel =  result[:11],
+                    text = result[14:]
                 )
                 
 
@@ -191,3 +194,5 @@ def main():
 # Start your app
 if __name__ == "__main__": 
     main()
+    
+    
